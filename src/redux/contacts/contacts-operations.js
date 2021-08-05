@@ -1,5 +1,5 @@
 import axios from "axios";
-import shortid from "shortid";
+
 import {
   addContactRequest,
   addContactSuccess,
@@ -28,24 +28,6 @@ const fetchContact = () => async (dispatch) => {
   }
 };
 
-/* const editContact =
-  ({ id, name, number }) =>
-  async (dispatch) => {
-    dispatch(editContactRequest());
-    console.log(id, name, number);
-    try {
-      const { data } = await axios.patch(`/contacts/${id}`, {
-        name: name,
-        number: number,
-      });
-
-      const newId = shortid.generate();
-      dispatch(editContactSuccess({ id: newId, name, number }));
-      dispatch(deleteContactSuccess(id));
-    } catch (error) {
-      dispatch(editContactError(error.message));
-    }
-  }; */
 const editContact =
   ({ id, name, number }) =>
   (dispatch) => {
