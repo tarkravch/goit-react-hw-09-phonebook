@@ -39,28 +39,35 @@ const styles = {
 
 export default function LoginView() {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  /* const [email, setEmail] = useState("");
+  const [password, setPassword] = useState(""); */
+  const initialState = {
+    email: "",
+    password: "",
+  };
+  const [user, setUser] = useState(initialState);
+  const { email, password } = user;
   const onLogin = useCallback(
     () => dispatch(authOperations.logIn({ email, password })),
     [dispatch, email, password]
   );
   // const onLogin = () => dispatch(authOperations.logIn({ email, password }));
 
-  const handleEmail = (e) => {
-    setEmail(e.currentTarget.value);
+  const handleChange = (e) => {
+    const { name, value } = e.currentTarget;
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePassword = (e) => {
+  /*  const handlePassword = (e) => {
     setPassword(e.currentTarget.value);
   };
-
+ */
   const handleSubmit = (e) => {
     e.preventDefault();
     onLogin();
-    setEmail("");
-    setPassword("");
+    /* setEmail("");
+    setPassword(""); */
+    setUser({ ...initialState });
   };
 
   return (
@@ -73,7 +80,7 @@ export default function LoginView() {
             type="email"
             name="email"
             value={email}
-            onChange={handleEmail}
+            onChange={handleChange}
           />
         </label>
         <label style={styles.label}>
@@ -82,7 +89,7 @@ export default function LoginView() {
             type="password"
             name="password"
             value={password}
-            onChange={handlePassword}
+            onChange={handleChange}
           />
         </label>
         <Button

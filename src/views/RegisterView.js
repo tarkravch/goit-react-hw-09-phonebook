@@ -34,9 +34,16 @@ const styles = {
 
 export default function RegisterView() {
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
+  /*  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); */
+  const initialState = {
+    name: "",
+    email: "",
+    password: "",
+  };
+  const [user, setUser] = useState(initialState);
+  const { name, email, password } = user;
 
   /*  const onRegister = useCallback(
     () => dispatch(authOperations.register({ name, email, password })),
@@ -45,7 +52,11 @@ export default function RegisterView() {
   const onRegister = () =>
     dispatch(authOperations.register({ name, email, password }));
 
-  const handleName = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.currentTarget;
+    setUser((prev) => ({ ...prev, [name]: value }));
+  };
+  /* const handleName = (e) => {
     setName(e.currentTarget.value);
   };
   const handleEmail = (e) => {
@@ -54,13 +65,14 @@ export default function RegisterView() {
 
   const handlePassword = (e) => {
     setPassword(e.currentTarget.value);
-  };
+  }; */
   const handleSubmit = (e) => {
     e.preventDefault();
     onRegister();
-    setName("");
+    /* setName("");
     setEmail("");
-    setPassword("");
+    setPassword(""); */
+    setUser(...initialState);
   };
 
   return (
@@ -70,7 +82,7 @@ export default function RegisterView() {
       <form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
         <label style={styles.label}>
           Name
-          <input type="text" name="name" value={name} onChange={handleName} />
+          <input type="text" name="name" value={name} onChange={handleChange} />
         </label>
 
         <label style={styles.label}>
@@ -79,7 +91,7 @@ export default function RegisterView() {
             type="email"
             name="email"
             value={email}
-            onChange={handleEmail}
+            onChange={handleChange}
           />
         </label>
 
@@ -89,7 +101,7 @@ export default function RegisterView() {
             type="password"
             name="password"
             value={password}
-            onChange={handlePassword}
+            onChange={handleChange}
           />
         </label>
 

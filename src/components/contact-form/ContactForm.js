@@ -8,26 +8,36 @@ import Button from "@material-ui/core/Button";
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+  /* const [name, setName] = useState("");
+  const [number, setNumber] = useState(""); */
+  const initialState = {
+    name: "",
+    number: "",
+  };
+  const [phoneContact, setPhoneContact] = useState(initialState);
+  const { name, number } = phoneContact;
 
+  const contacts = useSelector(contactSelectors.getVisibleContacts);
   /*  componentDidMount() {
     this.props.fetchContact();
   } */
-  const contacts = useSelector(contactSelectors.getVisibleContacts);
-
   useEffect(() => {
     dispatch(contactOperations.fetchContact());
   }, [dispatch]);
 
-  const handleName = (event) => {
+  const handleChange = (e) => {
+    const { name, value } = e.currentTarget;
+    setPhoneContact((prev) => ({ ...prev, [name]: value }));
+  };
+  /* const handleName = (event) => {
     const { value } = event.currentTarget;
     setName(value);
   };
   const handleNumber = (event) => {
     const { value } = event.currentTarget;
     setNumber(value);
-  };
+  }; */
+
   const handleSubmit = (event) => {
     event.preventDefault();
     contacts.find((contact) => contact.name === name)
@@ -39,8 +49,9 @@ export default function ContactForm() {
   };
 
   const reset = () => {
-    setName("");
-    setNumber("");
+    /* setName("");
+    setNumber(""); */
+    setPhoneContact({ ...initialState });
   };
   const nameInputId = shortid.generate();
   const numberInputId = shortid.generate();
@@ -58,7 +69,7 @@ export default function ContactForm() {
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             required
             value={name}
-            onChange={handleName}
+            onChange={handleChange}
             id={nameInputId}
           />
         </label>
@@ -72,7 +83,7 @@ export default function ContactForm() {
             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
             required
             value={number}
-            onChange={handleNumber}
+            onChange={handleChange}
             id={numberInputId}
           />
         </label>

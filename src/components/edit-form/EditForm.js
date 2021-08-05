@@ -13,20 +13,35 @@ import {
 
 export default function EditForm({ onSave }) {
   const dispatch = useDispatch();
-  const [id, setId] = useState(idOfContactToChange);
+  /*   const [id, setId] = useState(idOfContactToChange);
   const [name, setName] = useState(nameToChange);
-  const [number, setNumber] = useState(numberToChange);
+  const [number, setNumber] = useState(numberToChange); */
+  const initialState = {
+    id: "",
+    name: "",
+    number: "",
+  };
+  const [phoneContact, setPhoneContact] = useState({
+    id: idOfContactToChange,
+    name: nameToChange,
+    number: numberToChange,
+  });
+  const { id, name, number } = phoneContact;
 
   const contacts = useSelector(contactSelectors.getVisibleContacts);
 
-  const handleName = (event) => {
+  const handleChange = (e) => {
+    const { name, value } = e.currentTarget;
+    setPhoneContact((prev) => ({ ...prev, [name]: value }));
+  };
+  /*  const handleName = (event) => {
     const { value } = event.currentTarget;
     setName(value);
   };
   const handleNumber = (event) => {
     const { value } = event.currentTarget;
     setNumber(value);
-  };
+  }; */
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -38,9 +53,10 @@ export default function EditForm({ onSave }) {
     onSave();
   };
   const reset = () => {
-    setId("");
+    /* setId("");
     setName("");
-    setNumber("");
+    setNumber(""); */
+    setPhoneContact({ ...initialState });
   };
 
   const nameInputId = shortid.generate();
@@ -59,7 +75,7 @@ export default function EditForm({ onSave }) {
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             required
             value={name}
-            onChange={handleName}
+            onChange={handleChange}
             id={nameInputId}
           />
         </label>
@@ -73,7 +89,7 @@ export default function EditForm({ onSave }) {
             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
             required
             value={number}
-            onChange={handleNumber}
+            onChange={handleChange}
             id={numberInputId}
           />
         </label>
